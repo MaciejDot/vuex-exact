@@ -1,0 +1,33 @@
+{
+  "name": "vuex-exact",
+  "version": "0.0.0",
+  "description": "Package for vuex typing",
+  "main": "dist/src/index.js",
+  "readme": "Package that enables exact vuex store typing",
+  "types": "dist/types/index.d.ts",
+  "typings": "dist/types/index.d.ts",
+  "module": "dist/js/index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vuex",
+    "exact",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaciejDot/vuex-exact.git"
+  },
+  "homepage": "https://github.com/MaciejDot/vuex-exact",
+  "author": "Maciej Dziąg",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.0.5",
+    "vuex": "^3.6.0"
+  }
+}
