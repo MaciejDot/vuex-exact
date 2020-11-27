@@ -27,7 +27,10 @@
   "author": "Maciej Dziąg",
   "license": "MIT",
   "dependencies": {
-    "typescript": "^4.0.5",
+    "vue": "^2.6.12",
     "vuex": "^3.6.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.2"
   }
 }
