@@ -30,7 +30,7 @@ type UnpackActionModule<T extends keyof PropType<Impl, "modules">, Prefix extend
     UnpackActionGroup<Prefix, State, R, Impl> :
     UnpackActionGroup<Prefix, State, R, Impl> & UnpackActions<
         T extends string ?
-        Prefix extends "" ? `${T}/` : `${Prefix}/${T}/` : "",
+        `${Prefix}/${T}/` : "",
         UnsafePropType<PropType<PropType<Impl, "modules">, T>, "state">,
         any,
         PropType<PropType<Impl, "modules">, T>>
@@ -60,7 +60,7 @@ type UnpackMutationsModule<T extends keyof PropType<Impl, "modules">, Prefix ext
     UnpackMutationGroup<Prefix, State, R, Impl> :
     UnpackMutationGroup<Prefix, State, R, Impl> & UnpackMutations<
         T extends string ?
-        Prefix extends "" ? `${T}/` : `${Prefix}/${T}/` : "",
+        `${Prefix}${T}/` : "",
         UnsafePropType<PropType<PropType<Impl, "modules">, T>, "state">,
         any,
         PropType<PropType<Impl, "modules">, T>>
@@ -87,7 +87,7 @@ type UnpackGettersModule<T extends keyof PropType<Impl, "modules">, Prefix exten
     UnpackGettersGroup<Prefix, State, R, Impl> :
     UnpackGettersGroup<Prefix, State, R, Impl> & UnpackGetters<
         T extends string ?
-        Prefix extends "" ? `${T}/` : `${Prefix}/${T}/` : "",
+        `${Prefix}${T}/` : "",
         UnsafePropType<PropType<PropType<Impl, "modules">, T>, "state">,
         any,
         PropType<PropType<Impl, "modules">, T>>
@@ -95,6 +95,7 @@ type UnpackGettersModule<T extends keyof PropType<Impl, "modules">, Prefix exten
 type UnpackGetters<Prefix extends string, State, R, Impl extends StoreOptions<State> | Module<State, R>> =
 UnpackGettersModule<keyof PropType<Impl, "modules">, Prefix, State, R, Impl>
 
+//unpack State
 type UnpackState<State, Modules extends ModuleTree<State>> = State & {
     [T in keyof Modules]: UnpackState<PropType<PropType<Modules, T>, "state">,
         NonNullable<PropType<PropType<Modules, T>, "modules">>
@@ -107,12 +108,12 @@ Omit<Store<State>, "commit" | "dispatch" | "getters" | "state" >
     commit<T extends keyof UnpackMutations<"", State, any, StoreOptionsImpl>>
         (
             type : T , 
-            payload : UnpackMutations<"", State, any, StoreOptionsImpl>[T],
+            payload? : UnpackMutations<"", State, any, StoreOptionsImpl>[T],
             commitOptions?: CommitOptions) : void
     dispatch<T extends keyof UnpackActions<"",State, any, StoreOptionsImpl>>
         (
             type : T , 
-            payload : PropType<UnpackActions<"", State, any, StoreOptionsImpl>[T], "payload">,
+            payload? : PropType<UnpackActions<"", State, any, StoreOptionsImpl>[T], "payload">,
             dispatchOptions?: DispatchOptions
         ): PropType<UnpackActions<"", State, any, StoreOptionsImpl>[T], "returnType">
     readonly getters : UnpackGetters<"",State, any, StoreOptionsImpl>
