@@ -12,7 +12,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": false,
     "baseUrl": "./",
-    "outDir": "dist/js",
     "resolveJsonModule": false,
     "noImplicitAny":false,
     "declaration": true,
