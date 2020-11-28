@@ -1,5 +1,9 @@
 # vuex-exact
 
+## Aim
+
+The package is aiming for strongly typing vuex store for better development expirience
+
 ## Install
 
 ```powershell
