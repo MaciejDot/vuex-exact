@@ -121,60 +121,6 @@ export type UnpackStore<State, StoreOptionsImpl extends StoreOptions<State>> =
         state: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>
     }
 
-const options =
-{
-    state: {
-        still: 0,
-        zero: 0
-    },
-    mutations: {
-        mutate() { }
-    },
-    actions: {
-        act(context: any) { console.log(context) }
-    },
-    getters: {
-        get() { },
-        WebGL2RenderingContext() { return "" }
-    },
-    modules: {
-        a: {
-            modules: {
-                b: {
-                    namespaced: true,
-                    state: {
-                        still: 0,
-                        dorm: 0
-                    },
-                    mutations: {
-                        mutate(state: any) { console.log(state) }
-                    },
-                    actions: {
-                        act(context: any) { console.log(context) }
-                    },
-                    getters: {
-                        get() { }
-                    }
-                }
-            },
-            namespaced: true,
-            state: {
-                still: 0
-            },
-            mutations: {
-                mutate(state: any) { console.log(state) }
-            },
-            actions: {
-                act(context: any) { console.log(context) }
-            },
-            getters: {
-                ret() { return 0 },
-                get(context: any) { console.log('get', context) }
-            }
-        }
-    }
-}
-
 export type ActionContext<State,
     StoreOptionsImpl extends StoreOptions<State>> = {
         commit<T extends keyof UnpackMutations<"", State, any, StoreOptionsImpl>>
