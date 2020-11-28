@@ -12,7 +12,8 @@
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.MD"
   ],
   "keywords": [
     "vuex",
