@@ -30,7 +30,7 @@ type UnpackActionModule<T extends keyof PropType<Impl, "modules">, Prefix extend
     UnpackActionGroup<Prefix, State, R, Impl> :
     UnpackActionGroup<Prefix, State, R, Impl> & UnpackActions<
         T extends string ?
-        `${Prefix}/${T}/` : "",
+        `${Prefix}${T}/` : "",
         UnsafePropType<PropType<PropType<Impl, "modules">, T>, "state">,
         any,
         PropType<PropType<Impl, "modules">, T>>
@@ -119,22 +119,98 @@ Omit<Store<State>, "commit" | "dispatch" | "getters" | "state" >
     readonly getters : UnpackGetters<"",State, any, StoreOptionsImpl>
     state: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>
         }
-        
-type Prefixed<T extends string> = keyof {[K in string as `${T}${K}`] : string}  
 
-type learn = " _ " extends Prefixed<"_"> ? "": string
-
-const opt = {
-    state: {
-        long: 0
-    },
-    modules: {
-        b:{
-            state: {run:"n"}
+        const options =
+        {state: {
+          still: 0,
+          zero: 0
+        },
+        mutations: {
+          mutate(){}
+        },
+        actions: {
+          act(context: any){ console.log(context)}
+        },
+        getters: {
+          get(){},
+          WebGL2RenderingContext() {return ""}
+        },
+        modules: {
+          a:{
+            modules: {
+              b:{
+                namespaced: true,
+                state: {
+                  still: 0,
+                  dorm: 0
+                },
+                mutations: {
+                  mutate(state: any){console.log(state)}
+                },
+                actions: {
+                  act(context : any){ console.log(context) }
+                },
+                getters: {
+                  get(){}
+                }
+              }
+            },
+            namespaced: true,
+            state: {
+              still: 0
+            },
+            mutations: {
+              mutate(state : any){console.log(state)}
+            },
+            actions: {
+              act(context: any){ console.log(context)}
+            },
+            getters: {
+                ret(){return 0},
+              get(context: any){console.log('get',context)}
+            }
+          }
         }
-    }
+        }
+
+export type ActionContext<State, 
+    StoreOptionsImpl extends StoreOptions<State>> ={
+    commit<T extends keyof UnpackMutations<"", State, any, StoreOptionsImpl>>
+    (
+        type : T , 
+        payload? : UnpackMutations<"", State, any, StoreOptionsImpl>[T],
+        commitOptions?: CommitOptions) : void
+    dispatch<T extends keyof UnpackActions<"",State, any, StoreOptionsImpl>>
+    (
+        type : T , 
+        payload? : PropType<UnpackActions<"", State, any, StoreOptionsImpl>[T], "payload">,
+        dispatchOptions?: DispatchOptions
+    ): PropType<UnpackActions<"", State, any, StoreOptionsImpl>[T], "returnType">
+    readonly getters : UnpackGetters<"",State, any, StoreOptionsImpl>
+    state: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>
+    readonly rootGetters : UnpackGetters<"",State, any, StoreOptionsImpl>
+    rootState: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>  
 }
 
-//const lem : UnpackStore<typeof opt.state, typeof opt>
-
-// Module context => 
+export type ActionContextModule<
+    ModuleState,
+    MainState, 
+    ModuleOptionsImpl extends Module<ModuleState,MainState>,
+    StoreOptionsImpl extends StoreOptions<MainState>
+    > = {
+        commit<T extends keyof UnpackMutations<"", ModuleState, MainState, ModuleOptionsImpl>>
+        (
+            type : T , 
+            payload? : UnpackMutations<"", ModuleState, MainState, ModuleOptionsImpl>[T],
+            commitOptions?: CommitOptions) : void
+        dispatch<T extends keyof UnpackActions<"",ModuleState, MainState, ModuleOptionsImpl>>
+        (
+            type : T , 
+            payload? : PropType<UnpackActions<"", ModuleState, MainState, ModuleOptionsImpl>[T], "payload">,
+            dispatchOptions?: DispatchOptions
+        ): PropType<UnpackActions<"", ModuleState, MainState, ModuleOptionsImpl>[T], "returnType">
+        readonly getters : UnpackGetters<"",ModuleState, MainState, ModuleOptionsImpl>
+        state: UnpackState<MainState, NonNullable<PropType<ModuleOptionsImpl, "modules">>>
+        readonly rootGetters : UnpackGetters<"",MainState, any, StoreOptionsImpl>
+        rootState: UnpackState<MainState, NonNullable<PropType<StoreOptionsImpl, "modules">>>  
+}
