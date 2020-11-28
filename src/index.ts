@@ -118,4 +118,23 @@ Omit<Store<State>, "commit" | "dispatch" | "getters" | "state" >
         ): PropType<UnpackActions<"", State, any, StoreOptionsImpl>[T], "returnType">
     readonly getters : UnpackGetters<"",State, any, StoreOptionsImpl>
     state: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>
+        }
+        
+type Prefixed<T extends string> = keyof {[K in string as `${T}${K}`] : string}  
+
+type learn = " _ " extends Prefixed<"_"> ? "": string
+
+const opt = {
+    state: {
+        long: 0
+    },
+    modules: {
+        b:{
+            state: {run:"n"}
+        }
+    }
 }
+
+//const lem : UnpackStore<typeof opt.state, typeof opt>
+
+// Module context => 
