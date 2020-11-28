@@ -30,6 +30,7 @@
     "strictFunctionTypes": true,
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": true,
+    "emitDeclarationOnly": true
   },
   "include": [
     "./src/**/*.ts",
