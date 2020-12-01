@@ -1,4 +1,11 @@
-import { StoreOptions, Module, CommitOptions, ModuleTree, Store, DispatchOptions } from 'vuex'
+import {
+    StoreOptions,
+    Module,
+    CommitOptions,
+    ModuleTree,
+    Store,
+    DispatchOptions
+} from 'vuex'
 
 type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
 type UnsafePropType<TObj extends Record<string, any>, TProp extends string> = TObj[TProp];
@@ -162,3 +169,91 @@ export type ActionContextModule<
         readonly rootGetters: UnpackGetters<"", MainState, any, StoreOptionsImpl>
         rootState: UnpackState<MainState, NonNullable<PropType<StoreOptionsImpl, "modules">>>
     }
+
+//mapActions
+export type MapActionsType<State, StoreOptionsImpl extends StoreOptions<State>> =
+    <Actions extends Record<string, keyof UnpackActions<"", State, any, StoreOptionsImpl>> |
+        Array<keyof UnpackActions<"", State, any, StoreOptionsImpl>>
+        >
+        (actions: Actions) =>
+        Actions extends Record<string, keyof UnpackActions<"", State, any, StoreOptionsImpl>> ?
+        {
+            [TActionKey in keyof Actions]:
+            (
+                payload?: PropType<UnpackActions<"", State, any, StoreOptionsImpl>[Actions[TActionKey]], "payload">,
+                dispatchOptions?: DispatchOptions
+            ) => PropType<UnpackActions<"", State, any, StoreOptionsImpl>[Actions[TActionKey]], "returnType">
+        } :
+        Actions extends
+        Array<keyof UnpackActions<"", State, any, StoreOptionsImpl>> ?
+        { 
+            [T in Actions[0]]:
+            (
+                payload?: PropType<PropType<UnpackActions<"", State, any, StoreOptionsImpl>, T>, "payload">,
+                dispatchOptions?: DispatchOptions
+            ) => PropType<PropType<UnpackActions<"", State, any, StoreOptionsImpl>, T>, "returnType">
+        }: any
+//map state
+export type MapStateType<State, StoreOptionsImpl extends StoreOptions<State>> = 
+    <States extends (
+        Record<string, (state: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>) => any> |
+        Record<string, keyof UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>> |
+        Array<keyof UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>> )
+        >
+    ( states: States) =>
+    States extends Record<string, (state: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>) => any> ?
+
+        {
+            readonly [TKey in keyof States]: ReturnType<States[TKey]>
+        } :
+        States extends Record<string, keyof UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>> ?
+            {
+                readonly [TKey in keyof States]: PropType<UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>, States[TKey]>
+            }:
+            States extends Array<keyof UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>> ?
+            {
+                readonly [TKey in States[0] ]: UnpackState<State, NonNullable<PropType<StoreOptionsImpl, "modules">>>[TKey]
+            }:
+            any
+//map Getters
+export type MapGettersType<State, StoreOptionsImpl extends StoreOptions<State>> =
+    <Getters extends Record<string, keyof UnpackGetters<"", State, any, StoreOptionsImpl>> |
+        Array<keyof UnpackGetters<"", State, any, StoreOptionsImpl>>
+        >
+        (getters: Getters) =>
+        Getters extends Record<string, keyof UnpackGetters<"", State, any, StoreOptionsImpl>> ?
+        {
+            [TGetterKey in keyof Getters]: UnpackGetters<"", State, any, StoreOptionsImpl>[Getters[TGetterKey]]
+        } :
+        Getters extends
+        Array<keyof UnpackGetters<"", State, any, StoreOptionsImpl>> ?
+        { 
+            [T in Getters[0]]:
+            (
+                payload?: PropType<PropType<UnpackGetters<"", State, any, StoreOptionsImpl>, T>, "payload">,
+                commitOptions?: CommitOptions
+            ) => void
+        }: any
+//map Mutations
+export type MapMutationsType<State, StoreOptionsImpl extends StoreOptions<State>> =
+    <Mutations extends Record<string, keyof UnpackMutations<"", State, any, StoreOptionsImpl>> |
+        Array<keyof UnpackMutations<"", State, any, StoreOptionsImpl>>
+        >
+        (muations: Mutations) =>
+        Mutations extends Record<string, keyof UnpackMutations<"", State, any, StoreOptionsImpl>> ?
+        {
+            [TMutationKey in keyof Mutations]:
+            (
+                payload?: PropType<UnpackMutations<"", State, any, StoreOptionsImpl>[Mutations[TMutationKey]], "payload">,
+                commitOptions?: CommitOptions
+            ) => void
+        } :
+        Mutations extends
+        Array<keyof UnpackMutations<"", State, any, StoreOptionsImpl>> ?
+        { 
+            [T in Mutations[0]]:
+            (
+                payload?: PropType<PropType<UnpackMutations<"", State, any, StoreOptionsImpl>, T>, "payload">,
+                commitOptions?: CommitOptions
+            ) => void
+        }: any
