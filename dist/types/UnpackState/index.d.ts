@@ -1,8 +1,6 @@
 import { PropType } from "../Common";
-declare type UnpackStateRecursive<State, Modules> = State extends () => any ? ReturnType<State> & {
-    [T in keyof Modules]: UnpackStateRecursive<PropType<PropType<Modules, T>, "state">, NonNullable<PropType<PropType<Modules, T>, "modules">>>;
-} : State & {
-    [T in keyof Modules]: UnpackStateRecursive<PropType<PropType<Modules, T>, "state">, NonNullable<PropType<PropType<Modules, T>, "modules">>>;
+export declare type UnpackState<Impl> = PropType<Impl, "state"> extends (...args: any) => any ? ReturnType<PropType<Impl, "state">> & {
+    [T in keyof PropType<Impl, "modules">]: UnpackState<NonNullable<PropType<PropType<Impl, "modules">, T>>>;
+} : PropType<Impl, "state"> & {
+    [T in keyof PropType<Impl, "modules">]: UnpackState<NonNullable<PropType<PropType<Impl, "modules">, T>>>;
 };
-export declare type UnpackState<Impl> = UnpackStateRecursive<PropType<Impl, "state">, PropType<Impl, "modules">>;
-export {};

@@ -1,1 +1,1 @@
-export { UnpackStore } from "./UnpackStore"
+export type { UnpackStore } from "./UnpackStore"

@@ -1,1 +1,1 @@
-export declare type PropType<A, B> = A[B extends keyof A ? B : any];
+export declare type PropType<A, B> = B extends keyof A ? A[B] : undefined;

@@ -15,7 +15,7 @@ npm i vuex-exact
 ```JavaScript
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { UnpackStore, ActionContext, MapActionsType, MapStateType, MapGettersType, MapMutationsType } from 'vuex-exact'
+import { UnpackStore } from 'vuex-exact'
 
 const options = {
     state: {
@@ -29,31 +29,5 @@ const options = {
 
 export default new Vuex.Store(options)
 
-export type StoreOptions = typeof options
-export type StoreState = typeof options.state
-export type StoreType = UnpackStore<StoreState, StoreOptions> // Store Type 
-export type MainActionsContext = ActionContext<StoreState, StoreOptions> // context of actions outside modules
-export type MapActions = MapActionsType<StoreState, StoreOptions> // typeof mapActions
-export type MapState = MapStateType<StoreState, StoreOptions> // typeof mapState
-export type MapGetters = MapGettersType<StoreState, StoreOptions> // typeof mapGetters
-export type MapMutations = MapMutationsType<StoreState, StoreOptions> // typeof mapMutations
-```
-
-getting module action context
-
-```JavaScript
-import Vue from 'vue'
-import Vuex from 'vuex'
-import { ActionContextModule } from 'vuex-exact'
-import { StoreState, StoreOptions } from "" //main Store file location
-const moduleOptions = {
-    state: {
-        example: 0
-    },
-    mutations:{
-        mute: (state: any, payload: string) => {}
-    }
-}
-export moduleOptions
-export type ActionContext = ActionContextModule<typeof moduleOptions.state ,StoreState, typeof moduleOptions,StoreOptions>
+export type StoreType = UnpackStore<StoreOptions>
 ```
